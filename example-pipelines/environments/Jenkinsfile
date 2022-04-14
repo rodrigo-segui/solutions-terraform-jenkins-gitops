@@ -33,6 +33,7 @@ pipeline {
 
           if [ -d "example-pipelines/environments/${TARGET_ENV}/word-count-beam" ]; then
             cd example-pipelines/environments/${TARGET_ENV}/word-count-beam
+            sudo apt install maven
             mvn -v
             echo mvn -v
             mvn -Pdataflow-runner compile exec:java \
