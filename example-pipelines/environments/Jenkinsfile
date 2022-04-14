@@ -19,6 +19,37 @@ pipeline {
       label "terraform-exec"
   }
   stages {
+        // [START build maven]
+    stage('START build maven') {
+      when { anyOf {branch "prod";branch "dev";changeRequest() } }
+      steps {
+        container('terraform') {
+          sh '''
+          if [[ $CHANGE_TARGET ]]; then
+            TARGET_ENV=$CHANGE_TARGET
+          else
+            TARGET_ENV=$BRANCH_NAME
+          fi
+
+          if [ -d "example-pipelines/environments/${TARGET_ENV}/word-count-beam" ]; then
+            cd example-pipelines/environments/${TARGET_ENV}/word-count-beam
+            mvn -Pdataflow-runner compile exec:java \
+              -Dexec.mainClass=org.apache.beam.examples.WordCount \
+              -Dexec.args="--project=projeto-pipeline-dataflow \
+              --gcpTempLocation=gs://dev-dataflow-job-maven/temp/ \
+              --output=gs://dev-dataflow-job-maven/output \
+              --runner=DataflowRunner \
+              --region=us-central1"
+          else
+            echo "*************** SKIPPING APPLY ******************"
+            echo "Branch '$TARGET_ENV' does not represent an official environment."
+            echo "*************************************************"
+          fi'''
+        }
+      }
+    }
+    // [END START build maven]
+
     // [START tf-init, tf-validate]
     stage('TF init & validate') {
       when { anyOf {branch "prod";branch "dev";changeRequest() } }
