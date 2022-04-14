@@ -33,6 +33,8 @@ pipeline {
 
           if [ -d "example-pipelines/environments/${TARGET_ENV}/word-count-beam" ]; then
             cd example-pipelines/environments/${TARGET_ENV}/word-count-beam
+            mvn -v
+            echo mvn -v
             mvn -Pdataflow-runner compile exec:java \
               -Dexec.mainClass=org.apache.beam.examples.WordCount \
               -Dexec.args="--project=projeto-pipeline-dataflow \
