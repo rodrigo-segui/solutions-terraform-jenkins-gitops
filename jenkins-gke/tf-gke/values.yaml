@@ -212,7 +212,7 @@ master:
                               podRetention: "never"
                               activeDeadlineSeconds: "300"
                               slaveConnectTimeout: "1000"
-                             - name: "deployer"
+                            - name: "deployer"
                               namespace: "default"
                               nodeUsageMode: NORMAL
                               serviceAccount: ${jenkins_tf_ksa}
