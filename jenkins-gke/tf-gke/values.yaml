@@ -212,16 +212,31 @@ master:
                               podRetention: "never"
                               activeDeadlineSeconds: "300"
                               slaveConnectTimeout: "1000"
+                             - name: "deployer"
+                              namespace: "default"
+                              nodeUsageMode: NORMAL
+                              serviceAccount: ${jenkins_tf_ksa}
+                              label: "terraform-exec"
                               containers:
-                                - name: deployer
-                                  image: ubuntu:latest 
-                                  tty: true
-                                  command: [ cat ]
-                                  resources:
-                                    requests:
-                                      memory: 128Mi
-                                    limits:
-                                      memory: 2048Mi
+                                - name: "deployer"
+                                  image: "ubuntu:latest"
+                                  alwaysPullImage: false
+                                  workingDir: "/home/jenkins/agent"
+                                  ttyEnabled: true
+                                  command: "/bin/sh -c"
+                                  args: "cat"
+                                  resourceRequestCpu: "100m"
+                                  resourceLimitCpu: "500m"
+                                  resourceRequestMemory: "500Mi"
+                                  resourceLimitMemory: "1Gi"
+                              volumes:
+                                - emptyDirVolume:
+                                    memory: false
+                                    mountPath: "/tmp"
+                              podRetention: "never"
+                              activeDeadlineSeconds: "300"
+                              slaveConnectTimeout: "1000"
+          
                                
                             
         credentials: |
