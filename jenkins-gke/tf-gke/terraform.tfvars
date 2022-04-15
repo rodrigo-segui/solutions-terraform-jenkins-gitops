@@ -1,7 +1,7 @@
 
 
-project_id = "data-job-liv"
-tfstate_gcs_backend = "data-job-liv-tfstate"
+project_id = "teste1907"
+tfstate_gcs_backend = "teste1907-tfstate"
 region = "us-east4"
 zones = ["us-east4-a"]
 ip_range_pods_name = "ip-range-pods"
