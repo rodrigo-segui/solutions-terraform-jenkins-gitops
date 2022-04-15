@@ -212,6 +212,18 @@ master:
                               podRetention: "never"
                               activeDeadlineSeconds: "300"
                               slaveConnectTimeout: "1000"
+                              containers:
+                                - name: deployer
+                                  image: ubuntu:latest 
+                                  tty: true
+                                  command: [ cat ]
+                                  resources:
+                                    requests:
+                                      memory: 128Mi
+                                    limits:
+                                      memory: 2048Mi
+                               
+                            
         credentials: |
             credentials:
                 system:

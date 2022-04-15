@@ -23,7 +23,7 @@ pipeline {
     stage('START build maven') {
       when { anyOf {branch "prod";branch "dev";changeRequest() } }
       steps {
-        container('terraform') {
+        container('deployer') {
           sh '''
           if [[ $CHANGE_TARGET ]]; then
             TARGET_ENV=$CHANGE_TARGET
@@ -33,7 +33,8 @@ pipeline {
 
           if [ -d "example-pipelines/environments/${TARGET_ENV}/word-count-beam" ]; then
             cd example-pipelines/environments/${TARGET_ENV}/word-count-beam
-            terraform -v
+            sudo apt -y install default-jdk
+            sudo apt -y install maven
             java -v
             mvn -Pdataflow-runner compile exec:java \
               -Dexec.mainClass=org.apache.beam.examples.WordCount \
